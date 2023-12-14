@@ -1,14 +1,8 @@
 package com.example.jobportal.responsedto;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 import com.example.jobportal.enums.UserRole;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 
 @Component
 public class UserResponseDto {
