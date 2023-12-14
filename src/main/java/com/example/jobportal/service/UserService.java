@@ -19,25 +19,24 @@ public class UserService {
 	
 	private User convertToUser(UserRequestDto userRq ,User user)
 	{
-	
-		user.setUsername(userRq.getUsername());
-		user.setEmail(userRq.getEmail());
-		user.setPassword(userRq.getPassword());
-	
+		userRq.setEmail(user.getEmail());
+		userRq.setPassword(user.getPassword());
+		userRq.setUsername(user.getUsername());
+		userRq.setUserrole(user.getUserRole());
+		
 		return user;
 	}
 	
 	
 	private UserResponseDto convertToUserRespnse (User user)
 	{
-		 UserResponseDto responseDto = new UserResponseDto();
-		  responseDto.setEmail(user.getEmail());
-		  responseDto.setUserId(user.getUserId());
-		  responseDto.setUserrole(user.getUserRole());
-		  responseDto.setUsername(user.getUsername());
-		 
-
-		 return responseDto;
+		UserResponseDto userResp= new UserResponseDto();
+		userResp.setEmail(user.getEmail());
+		userResp.setUserId(user.getUserId());
+		userResp.setUsername(user.getUsername());
+		userResp.setUserrole(user.getUserRole());
+		 return userResp;
+		
 		
 		
 	}
@@ -46,6 +45,7 @@ public class UserService {
 	
 		User user = convertToUser(userReq, new User());
 		userRepo.save(user);
+		
 		ResponseStructure<String> rs = new ResponseStructure<>();
 		rs.setStatusCode(HttpStatus.CREATED.value());
 		rs.setMessage(" User data saved successfully");

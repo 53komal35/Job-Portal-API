@@ -17,11 +17,10 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@jakarta.persistence.Id
    private  int userId;
-	
-
    private  String username;
    private  String email;
-   private  String password; 
+   private  String password;
+   
  private UserRole userRole;
 public int getUserId() {
 	return userId;
