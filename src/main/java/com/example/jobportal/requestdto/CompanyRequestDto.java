@@ -10,17 +10,32 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Component
 public class CompanyRequestDto {
 	
-
+	@NotBlank(message = "User cannot be blank")
+	@NotNull(message = "Customer cannot be null")
+	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
 	private String companyName;
+	
 	private LocalDate foundedDate;
+	
 	private String description;
 	private BusinessType businessType;
+	
+	@NotBlank(message = "Customer cannot be blank")
+	@NotNull(message = "Customer cannot be null")
+	@Email(regexp = "[a-zA-Z0-9+_.-]+@[g][m][a][i][l]+.[c][o][m]", message = "invalid email--Should be in the extension of '@gmail.com' ")
 	private String contactEmail;
+	
+	
 	private String contactPhno;
+	
 	private String website;
 
 	public String getCompanyName() {

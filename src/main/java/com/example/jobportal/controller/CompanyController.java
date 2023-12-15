@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jobportal.enums.BusinessType;
 import com.example.jobportal.enums.UserRole;
+import com.example.jobportal.exceptionhandling.IllegalAccssException;
+import com.example.jobportal.exceptionhandling.UserNotFoundException;
+import com.example.jobportal.exceptionhandling.UserNotSuitableException;
+import com.example.jobportal.requestdto.CompanyRequestDto;
 import com.example.jobportal.requestdto.UserRequestDto;
 import com.example.jobportal.service.CompanyService;
 import com.example.jobportal.utility.ResponseStructure;
@@ -27,11 +32,11 @@ public class CompanyController {
 	
 	
 	
-	@PostMapping("/userroles/{role}/users")  
-	public ResponseEntity<ResponseStructure<String>> inserUser(@RequestBody @Valid UserRequestDto userReq,@PathVariable UserRole role)
+	@PostMapping("/users/{userId}/BusinessType/{buss}/companies")  
+	public ResponseEntity<ResponseStructure<String>> inserUser(@RequestBody @Valid CompanyRequestDto userReq,@PathVariable int userId,@PathVariable BusinessType buss) throws IllegalAccssException, UserNotFoundException
 	{
 		
-		 return compService.insertUser(userReq,role);
+		 return compService.insertCompany(userReq,buss,userId);
 		
 	}
 	
