@@ -25,18 +25,11 @@ import com.example.jobportal.utility.ResponseStructure;
 public class UserController {
 	
 	@Autowired
-	UserService is;
+	UserService userServ;
 	
 	
 	
-	@PostMapping("/users")  
-	public ResponseEntity<ResponseStructure<String>> inserUser(@RequestBody  UserRequestDto userReq)
-	{
-		
-		 return is.insertUser(userReq);
-		
-	}
-	
+
 
 	
 	
