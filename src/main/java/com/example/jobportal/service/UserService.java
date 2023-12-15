@@ -15,6 +15,8 @@ import com.example.jobportal.requestdto.UserRequestDto;
 import com.example.jobportal.responsedto.UserResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
 
+import jakarta.validation.Valid;
+
 @Service
 public class UserService {
 	
@@ -75,6 +77,53 @@ public class UserService {
 			
 			return  new ResponseEntity<ResponseStructure<UserResponseDto>>(responseStruct,HttpStatus.FOUND);
 			
+		
+			
+		}
+		
+		else throw new UserNotFoundException("user with the given  Id not present");
+	
+	}
+
+
+	public ResponseEntity<ResponseStructure<String>> updateUserById(@Valid UserRequestDto userReq, int userId) throws UserNotFoundException {
+		
+		Optional<User> optUser = userRepo.findById(userId);
+		
+		if(optUser.isPresent()) {
+			
+
+		User user = convertToUser(userReq, optUser.get());
+	
+		userRepo.save(user);
+		
+		ResponseStructure<String> respStruc = new ResponseStructure<>();
+		respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+		respStruc.setMessage(" User data updated successfully");
+		respStruc.setData(" USER UPDATED SUCCESSFULLY");
+		
+		return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.ACCEPTED);
+		
+		}
+		
+		else throw new UserNotFoundException(" user not found");
+	}
+
+
+	public ResponseEntity<ResponseStructure<String>> deleteUserById(int userId) throws UserNotFoundException {
+		Optional<User> optUser = userRepo.findById(userId);
+		if(optUser.isPresent())
+		{
+			 userRepo.deleteById(userId);
+			
+			ResponseStructure<String> responseStruct = new ResponseStructure<String>();
+			responseStruct.setMessage("user found successfully");
+			responseStruct.setStatusCode(HttpStatus.FOUND.value());
+			responseStruct.setData("USER DELETED SUCCESSFULLY");
+			
+			return  new ResponseEntity<ResponseStructure<String>>(responseStruct,HttpStatus.FOUND);
+			
+		
 			
 		}
 		

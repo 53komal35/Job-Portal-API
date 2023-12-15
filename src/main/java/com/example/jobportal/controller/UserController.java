@@ -2,9 +2,11 @@ package com.example.jobportal.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +32,7 @@ public class UserController {
 	
 	
 	
-	@PostMapping("/userrole/{role}/users")  
+	@PostMapping("/userroles/{role}/users")  
 	public ResponseEntity<ResponseStructure<String>> inserUser(@RequestBody @Valid UserRequestDto userReq,@PathVariable UserRole role)
 	{
 		
@@ -44,6 +46,22 @@ public class UserController {
 	{
 		
 		 return userService.findUserById(userId);
+		
+	}
+	
+	@PutMapping("/users/{userId}")  
+	public ResponseEntity<ResponseStructure<String>> updateUserById(@RequestBody @Valid UserRequestDto userReq,@PathVariable int userId) throws UserNotFoundException
+	{
+		
+		 return userService.updateUserById(userReq,userId);
+		
+	}
+	
+	@DeleteMapping("/users/{userId}")  
+	public ResponseEntity<ResponseStructure<String>> DeleteUserById(@PathVariable int  userId) throws UserNotFoundException
+	{
+		
+		 return userService.deleteUserById(userId);
 		
 	}
 
