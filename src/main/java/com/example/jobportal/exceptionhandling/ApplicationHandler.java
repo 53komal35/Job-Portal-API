@@ -23,26 +23,31 @@ import com.example.jobportal.utility.ErrorStructure;
 public class ApplicationHandler extends ResponseEntityExceptionHandler {
 	
 	
+
+	
+	
+	
+	
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-		
-		
-	   List<ObjectError> list = ex.getAllErrors();
-	   HashMap<String,String> hashMap = new HashMap<>();
-	   for(ObjectError error:list)
-	   {
-		   FieldError fieldError = (FieldError)error;
-		   String feildName=fieldError.getField();
-		   String message = fieldError.getDefaultMessage();
-		   hashMap.put(feildName, message);
-		   
-		   
-	   }
-		
-		
-		
-		return new ResponseEntity<Object>(hashMap,HttpStatus.BAD_REQUEST);
+
+		   List<ObjectError> list = ex.getAllErrors();
+		   HashMap<String,String> hashMap = new HashMap<>();
+		   for(ObjectError error:list)
+		   {
+			   FieldError fieldError = (FieldError)error;
+			   String feildName=fieldError.getField();
+			   String message = fieldError.getDefaultMessage();
+			   hashMap.put(feildName, message);
+			   
+			   
+		   }
+			
+			
+			
+			return new ResponseEntity<Object>(hashMap,HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)

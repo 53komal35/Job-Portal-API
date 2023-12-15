@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jobportal.enums.UserRole;
 import com.example.jobportal.requestdto.UserRequestDto;
 import com.example.jobportal.service.UserService;
 import com.example.jobportal.utility.ResponseStructure;
+
+import jakarta.validation.Valid;
 
 
 
@@ -19,15 +22,15 @@ import com.example.jobportal.utility.ResponseStructure;
 public class UserController {
 	
 	@Autowired
-	UserService is;
+	UserService userService;
 	
 	
 	
-	@PostMapping("/users")  
-	public ResponseEntity<ResponseStructure<String>> inserUser(@RequestBody  UserRequestDto userReq)
+	@PostMapping("/userrole/{role}/users")  
+	public ResponseEntity<ResponseStructure<String>> inserUser(@RequestBody @Valid UserRequestDto userReq,UserRole role)
 	{
 		
-		 return is.insertUser(userReq);
+		 return userService.insertUser(userReq,role);
 		
 	}
 	

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.jobportal.entity.User;
+import com.example.jobportal.enums.UserRole;
 import com.example.jobportal.repository.UserRepository;
 import com.example.jobportal.requestdto.UserRequestDto;
 import com.example.jobportal.responsedto.UserResponseDto;
@@ -22,7 +23,7 @@ public class UserService {
 		userRq.setEmail(user.getEmail());
 		userRq.setPassword(user.getPassword());
 		userRq.setUsername(user.getUsername());
-		userRq.setUserrole(user.getUserRole());
+	
 		
 		return user;
 	}
@@ -41,9 +42,10 @@ public class UserService {
 		
 	}
 
-	public ResponseEntity<ResponseStructure<String>> insertUser(UserRequestDto userReq) {
+	public ResponseEntity<ResponseStructure<String>> insertUser(UserRequestDto userReq, UserRole role) {
 	
 		User user = convertToUser(userReq, new User());
+		user.setUserRole(role);
 		userRepo.save(user);
 		
 		ResponseStructure<String> rs = new ResponseStructure<>();
