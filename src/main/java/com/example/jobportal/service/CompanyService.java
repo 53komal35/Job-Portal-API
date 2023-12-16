@@ -135,6 +135,30 @@ public class CompanyService {
 		
 		} else throw new CompanyNotFoundException(" company not found with given Id");
 	}
+
+	public ResponseEntity<ResponseStructure<String>> deleteCompById(int compId) throws CompanyNotFoundException {
+		
+		
+		Optional<Company> optComp = compRepo.findById(compId);
+		if (optComp.isPresent()) {
+			
+			
+			compRepo.deleteById(compId);
+;			
+
+			ResponseStructure<String> responseStruct = new ResponseStructure<>();
+			responseStruct.setMessage(" company found successfully");
+			responseStruct.setStatusCode(HttpStatus.FOUND.value());
+			responseStruct.setData("COMPANY DELETED SUCCESSFULLY");
+
+			return new ResponseEntity<ResponseStructure<String>>(responseStruct, HttpStatus.FOUND);
+
+		}
+
+		else
+			throw new CompanyNotFoundException(" company  with the given  Id not present");
+
+	}
 	
 
 }
