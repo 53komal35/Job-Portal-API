@@ -1,5 +1,6 @@
 package com.example.jobportal.service;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,14 @@ import com.example.jobportal.entity.Company;
 import com.example.jobportal.entity.User;
 import com.example.jobportal.enums.BusinessType;
 import com.example.jobportal.enums.UserRole;
+import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.IllegalAccssException;
 import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.repository.CompanyRepository;
 import com.example.jobportal.repository.UserRepository;
 import com.example.jobportal.requestdto.CompanyRequestDto;
 import com.example.jobportal.responsedto.CompanyResponseDto;
+import com.example.jobportal.responsedto.UserResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
 
 @Service
@@ -63,6 +66,7 @@ public class CompanyService {
 
 				Company company = convertToCompany(compReq, new Company());
 				company.setBusinessType(bussType);
+				company.setUserMap(user);
 
 				compRepo.save(company);
 
@@ -79,6 +83,32 @@ public class CompanyService {
 
 		} else
 			throw new UserNotFoundException("user not found");
+	}
+
+	public ResponseEntity<ResponseStructure<CompanyResponseDto>> findCompById(int compId) throws CompanyNotFoundException {
+		
+		Optional<Company> optComp = compRepo.findById(compId);
+		if (optComp.isPresent()) {
+			Company company = optComp.get();
+			
+			
+;			 CompanyResponseDto dto = convertToCompResponse(company); 
+			 HashMap<String,String> hasmap = new HashMap<>();
+			 hasmap.put("Founder", "/users/"+company.getUserMap().getUserId());
+			 dto.setOptions(hasmap);
+
+			ResponseStructure<CompanyResponseDto> responseStruct = new ResponseStructure<CompanyResponseDto>();
+			responseStruct.setMessage(" company found successfully");
+			responseStruct.setStatusCode(HttpStatus.FOUND.value());
+			responseStruct.setData(dto);
+
+			return new ResponseEntity<ResponseStructure<CompanyResponseDto>>(responseStruct, HttpStatus.FOUND);
+
+		}
+
+		else
+			throw new CompanyNotFoundException(" company  with the given  Id not present");
+
 	}
 
 }

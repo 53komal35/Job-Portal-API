@@ -33,6 +33,7 @@ public class UserService {
 
 	private UserResponseDto convertToUserRespnse(User user) {
 		UserResponseDto userResp = new UserResponseDto();
+		
 		userResp.setEmail(user.getEmail());
 		userResp.setUserId(user.getUserId());
 		userResp.setUsername(user.getUsername());

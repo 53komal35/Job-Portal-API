@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Component
 @Entity
@@ -26,6 +27,17 @@ public class Company {
 	private String contactPhno;
 	private String website;
 	
+	@ManyToOne
+	private User userMap;
+	
+	
+	
+	public User getUserMap() {
+		return userMap;
+	}
+	public void setUserMap(User userMap) {
+		this.userMap = userMap;
+	}
 	public int getCompanyId() {
 		return companyId;
 	}

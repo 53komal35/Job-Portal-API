@@ -1,5 +1,7 @@
 package com.example.jobportal.entity;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.example.jobportal.enums.UserRole;
@@ -8,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Component
 @Entity
@@ -21,6 +24,17 @@ public class User {
 	private String password;
 
 	private UserRole userRole;
+	
+	@OneToMany(mappedBy = "userMap")
+	private List<Company> compMap; 
+
+	public List<Company> getCompMap() {
+		return compMap;
+	}
+
+	public void setCompMap(List<Company> compMap) {
+		this.compMap = compMap;
+	}
 
 	public int getUserId() {
 		return userId;
