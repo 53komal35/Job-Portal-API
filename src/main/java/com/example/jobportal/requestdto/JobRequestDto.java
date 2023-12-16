@@ -7,15 +7,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Component
 public class JobRequestDto {
 	
-	
+	@NotBlank(message = "designation cannot be blank")
+	@NotNull(message = "designation cannot be null")
 	private String designation;
+	
+	@NotBlank(message=" Role description cannot be blank")
 	private String jobRole;
+	
 	private String location;
+	
 	private double ctc;
 	
 

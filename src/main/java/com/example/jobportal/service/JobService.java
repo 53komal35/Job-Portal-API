@@ -74,8 +74,8 @@ public class JobService {
 
 				ResponseStructure<String> respStruc = new ResponseStructure<>();
 				respStruc.setStatusCode(HttpStatus.CREATED.value());
-				respStruc.setMessage(" Company data saved successfully");
-				respStruc.setData(" 1 COMPANY ADDED  SUCCESSFULLY");
+				respStruc.setMessage(" Jobsaved successfully");
+				respStruc.setData(" 1 JOB ADDED  SUCCESSFULLY");
 
 				return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
 			}
