@@ -20,14 +20,14 @@ public class CompanyRequestDto {
 	
 	@NotBlank(message = "User cannot be blank")
 	@NotNull(message = "Customer cannot be null")
-	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter")
+	@Pattern(regexp = "[A-Z]{1}[a-zA-Z\\s]*", message = "Name should Start with capital letter ,numbers and special charcters not allowed")
 	private String companyName;
 	
 	private LocalDate foundedDate;
 	
 	private String description;
 	
-	private BusinessType businessType;
+	
 	
 	@NotBlank(message = "Customer cannot be blank")
 	@NotNull(message = "Customer cannot be null")
@@ -57,12 +57,8 @@ public class CompanyRequestDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public BusinessType getBusinessType() {
-		return businessType;
-	}
-	public void setBusinessType(BusinessType businessType) {
-		this.businessType = businessType;
-	}
+
+
 	public String getContactEmail() {
 		return contactEmail;
 	}

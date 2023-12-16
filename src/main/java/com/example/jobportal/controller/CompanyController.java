@@ -2,9 +2,11 @@ package com.example.jobportal.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,10 +35,10 @@ public class CompanyController {
 	
 	
 	@PostMapping("/users/{userId}/BusinessType/{buss}/companies")  
-	public ResponseEntity<ResponseStructure<String>> inserUser(@RequestBody @Valid CompanyRequestDto userReq,@PathVariable int userId,@PathVariable BusinessType buss) throws IllegalAccssException, UserNotFoundException
+	public ResponseEntity<ResponseStructure<String>> inserCompany(@RequestBody @Valid CompanyRequestDto compReq,@PathVariable int userId,@PathVariable BusinessType buss) throws IllegalAccssException, UserNotFoundException
 	{
 		
-		 return compService.insertCompany(userReq,buss,userId);
+		 return compService.insertCompany(compReq,buss,userId);
 		
 	}
 	
@@ -47,8 +49,22 @@ public class CompanyController {
 		 return compService.findCompById(compId);
 		
 	}
-
-
 	
+	@PutMapping("/companies/{compId}")  
+	public ResponseEntity<ResponseStructure<String>> inserUser(@RequestBody @Valid CompanyRequestDto compReq,@PathVariable int compId) throws CompanyNotFoundException 
+	{
+		
+		 return compService.updateCompany(compReq,compId);
+		
+	}	
+	
+	
+	@DeleteMapping("/companies/{compId}")  
+	public ResponseEntity<ResponseStructure<String>> deleteCompById(@PathVariable int  compId) throws CompanyNotFoundException
+	{
+		
+		 return compService.deleteCompById(compId);
+		
+	}
 	
 }

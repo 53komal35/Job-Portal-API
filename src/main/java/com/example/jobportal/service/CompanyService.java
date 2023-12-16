@@ -22,6 +22,8 @@ import com.example.jobportal.responsedto.CompanyResponseDto;
 import com.example.jobportal.responsedto.UserResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
 
+import jakarta.validation.Valid;
+
 @Service
 public class CompanyService {
 	@Autowired
@@ -110,5 +112,29 @@ public class CompanyService {
 			throw new CompanyNotFoundException(" company  with the given  Id not present");
 
 	}
+
+	public ResponseEntity<ResponseStructure<String>> updateCompany(CompanyRequestDto compReq, int compId) throws CompanyNotFoundException {
+		
+		
+		Optional<Company> optComp = compRepo.findById(compId);
+		if(optComp.isPresent()) {
+		
+		
+		Company company = convertToCompany(compReq,optComp.get());
+	
+
+		compRepo.save(company);
+
+		ResponseStructure<String> respStruc = new ResponseStructure<>();
+		respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+		respStruc.setMessage(" Company data saved successfully");
+		respStruc.setData("  COMPANY UPDATED SUCCESSFULLY");
+
+		return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.ACCEPTED);
+		
+		
+		} else throw new CompanyNotFoundException(" company not found with given Id");
+	}
+	
 
 }
