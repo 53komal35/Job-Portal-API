@@ -15,52 +15,31 @@ import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.IllegalAccssException;
 import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.requestdto.CompanyRequestDto;
+import com.example.jobportal.requestdto.JobRequestDto;
 import com.example.jobportal.responsedto.CompanyResponseDto;
 import com.example.jobportal.service.CompanyService;
+import com.example.jobportal.service.JobService;
 import com.example.jobportal.utility.ResponseStructure;
 
 import jakarta.validation.Valid;
 
 @RestController
-public class CompanyController {
+public class JobController {
 	
 	@Autowired
-	CompanyService compService;
+	JobService jobService;
 	
 	
 	
-	@PostMapping("/users/{userId}/BusinessType/{buss}/companies")  
-	public ResponseEntity<ResponseStructure<String>> inserCompany(@RequestBody @Valid CompanyRequestDto compReq,@PathVariable int userId,
-			@PathVariable BusinessType buss) throws IllegalAccssException, UserNotFoundException
+	@PostMapping("/companies/{compId}/jobs")  
+	public ResponseEntity<ResponseStructure<String>> inserJob(@RequestBody @Valid JobRequestDto jobReq,@PathVariable int compId) 
+			throws CompanyNotFoundException
 	{
 		
-		 return compService.insertCompany(compReq,buss,userId);
+		 return jobService.insertJOb(jobReq,compId);
 		
 	}
 	
-	@GetMapping("/companies/{compId}")  
-	public ResponseEntity<ResponseStructure<CompanyResponseDto>> findCompById(@PathVariable int  compId) throws CompanyNotFoundException
-	{
-		
-		 return compService.findCompById(compId);
-		
-	}
-	
-	@PutMapping("/companies/{compId}")  
-	public ResponseEntity<ResponseStructure<String>> updateUser(@RequestBody @Valid CompanyRequestDto compReq,@PathVariable int compId) throws CompanyNotFoundException 
-	{
-		
-		 return compService.updateCompany(compReq,compId);
-		
-	}	
-	
-	
-	@DeleteMapping("/companies/{compId}")  
-	public ResponseEntity<ResponseStructure<String>> deleteCompById(@PathVariable int  compId) throws CompanyNotFoundException
-	{
-		
-		 return compService.deleteCompById(compId);
-		
-	}
+
 	
 }

@@ -1,6 +1,7 @@
 package com.example.jobportal.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Component
 @Entity
@@ -31,6 +33,17 @@ public class Company {
 	private User userMap;
 	
 	
+	@OneToMany(mappedBy = "compMap")
+	private List<Job> jobMap;
+	
+	
+	public List<Job> getJobMap() {
+		return jobMap;
+	}
+	public void setJobMap(List<Job> jobMap) {
+		this.jobMap = jobMap;
+	}
+
 	
 	public User getUserMap() {
 		return userMap;
