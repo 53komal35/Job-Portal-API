@@ -28,7 +28,7 @@ public class CompanyService {
 	private CompanyRepository compRepo;
 
 	private Company convertToCompany(CompanyRequestDto compRq, Company comp) {
-		comp.setBusinessType(compRq.getBusinessType());
+		
 		comp.setCompanyName(compRq.getCompanyName());
 		comp.setContactEmail(compRq.getContactEmail());
 		comp.setContactPhno(compRq.getContactPhno());
@@ -74,8 +74,8 @@ public class CompanyService {
 				return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
 			}
 
-			else
-				throw new IllegalAccssException(" This user not Autharised to add Companies");
+			else throw new IllegalAccssException("user not authorised to do this opertation");
+			
 
 		} else
 			throw new UserNotFoundException("user not found");

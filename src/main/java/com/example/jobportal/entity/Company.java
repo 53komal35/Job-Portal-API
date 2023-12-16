@@ -25,6 +25,7 @@ public class Company {
 	private String contactEmail;
 	private String contactPhno;
 	private String website;
+	
 	public int getCompanyId() {
 		return companyId;
 	}

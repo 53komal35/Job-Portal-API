@@ -26,6 +26,7 @@ public class CompanyRequestDto {
 	private LocalDate foundedDate;
 	
 	private String description;
+	
 	private BusinessType businessType;
 	
 	@NotBlank(message = "Customer cannot be blank")
