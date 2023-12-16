@@ -11,15 +11,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.example.jobportal.utility.ErrorStructure;
 
-@RestControllerAdvice
 public class ApplicationHandler extends ResponseEntityExceptionHandler {
-
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -69,5 +67,7 @@ public class ApplicationHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
 
 	}
+	
+	
 
 }
