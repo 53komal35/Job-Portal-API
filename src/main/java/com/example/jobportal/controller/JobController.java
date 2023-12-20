@@ -1,5 +1,7 @@
 package com.example.jobportal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,13 +12,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jobportal.entity.Job;
 import com.example.jobportal.enums.BusinessType;
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.IllegalAccssException;
+import com.example.jobportal.exceptionhandling.JobNotFoundException;
 import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.requestdto.CompanyRequestDto;
 import com.example.jobportal.requestdto.JobRequestDto;
 import com.example.jobportal.responsedto.CompanyResponseDto;
+import com.example.jobportal.responsedto.JobResponseDto;
 import com.example.jobportal.service.CompanyService;
 import com.example.jobportal.service.JobService;
 import com.example.jobportal.utility.ResponseStructure;
@@ -37,6 +42,14 @@ public class JobController {
 	{
 		
 		 return jobService.insertJOb(jobReq,compId);
+		
+	}
+	@GetMapping("/designations/{designation}/jobs")  
+	public ResponseEntity<ResponseStructure<List<JobResponseDto>>> findJobByDesignation(@PathVariable String designation) throws JobNotFoundException 
+			
+	{
+		
+		 return jobService.findJOb(designation);
 		
 	}
 	
