@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.jobportal.entity.Company;
 import com.example.jobportal.entity.Job;
-import com.example.jobportal.entity.User;
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.JobNotFoundException;
-import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.repository.CompanyRepository;
 import com.example.jobportal.repository.JobRepository;
 import com.example.jobportal.requestdto.JobRequestDto;
@@ -166,6 +164,25 @@ public class JobService {
 
 		else
 			throw new JobNotFoundException(" Job not found with this Id");
+	}
+
+	public ResponseEntity<ResponseStructure<String>> deleteJOb(int jobId) throws JobNotFoundException {
+
+                                    Optional<Job> optJob = jobRepo.findById(jobId);
+              if(optJob.isPresent())
+              {
+                         jobRepo.deleteById(jobId);
+			ResponseStructure<String> respStruc = new ResponseStructure<>();
+			respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+			respStruc.setMessage(" Job deleted successfully");
+			respStruc.setData(" 1 JOB DELETED  SUCCESSFULLY");
+
+			return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.ACCEPTED);
+		}
+
+		else throw new JobNotFoundException(" Job not found with this Id");
+
+
 	}
 
 

@@ -67,13 +67,22 @@ public class JobController {
 	
 
 	@PutMapping("/jobs/{jobId}")  
-	public ResponseEntity<ResponseStructure<String>> updateJobById(@RequestBody @Valid JobRequestDto jobReq,@PathVariable int jobId) throws JobNotFoundException
+	public ResponseEntity<ResponseStructure<String>> updateJobById(@RequestBody  JobRequestDto jobReq,@PathVariable int jobId) throws JobNotFoundException
 	{
 		
 		 return jobService.updateJobById(jobReq,jobId);
 		
 	}
 	
+
+	@DeleteMapping("/jobs/{jobId}")  
+	public ResponseEntity<ResponseStructure<String>> deleteJob(@PathVariable int jobId) 
+			throws JobNotFoundException
+	{
+		
+		 return jobService.deleteJOb(jobId);
+		
+	}
 	
 	
 	
