@@ -19,10 +19,7 @@ import com.example.jobportal.repository.CompanyRepository;
 import com.example.jobportal.repository.UserRepository;
 import com.example.jobportal.requestdto.CompanyRequestDto;
 import com.example.jobportal.responsedto.CompanyResponseDto;
-import com.example.jobportal.responsedto.UserResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
-
-import jakarta.validation.Valid;
 
 @Service
 public class CompanyService {

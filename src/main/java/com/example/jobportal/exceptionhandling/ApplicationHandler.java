@@ -79,7 +79,27 @@ public class ApplicationHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
 
 	}
+	@ExceptionHandler(ResumeNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>> resumeNotFoundById(ResumeNotFoundException cnf) {
+		ErrorStructure<String> es = new ErrorStructure<String>();
+		es.setStatusCode(HttpStatus.NOT_FOUND.value());
+		es.setMessage(cnf.getMess()); // message whate we threw in service
+		es.setErrordata(" RESUME WITH GIVEN ID NOT PRESENT ");
+
+		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
+
+	}
 	
+	@ExceptionHandler(SkillNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>> skillNotFoundById(SkillNotFoundException cnf) {
+		ErrorStructure<String> es = new ErrorStructure<String>();
+		es.setStatusCode(HttpStatus.NOT_FOUND.value());
+		es.setMessage(cnf.getMess()); // message whate we threw in service
+		es.setErrordata(" SKILL WITH GIVEN ID NOT PRESENT ");
+
+		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
+
+	}
 	
 
 }

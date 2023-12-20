@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Component
 @Entity
@@ -23,10 +24,23 @@ public class User {
 	private String email;
 	private String password;
 
+
 	private UserRole userRole;
 	
 	@OneToMany(mappedBy = "userMap")
 	private List<Company> compMap; 
+	
+	@OneToOne
+	private Resume resumeMap;
+	
+	public Resume getResumeMap() {
+		return resumeMap;
+	}
+
+	public void setResumeMap(Resume resumeMap) {
+		this.resumeMap = resumeMap;
+	}
+
 
 	public List<Company> getCompMap() {
 		return compMap;

@@ -12,18 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jobportal.entity.Job;
-import com.example.jobportal.enums.BusinessType;
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
-import com.example.jobportal.exceptionhandling.IllegalAccssException;
 import com.example.jobportal.exceptionhandling.JobNotFoundException;
-import com.example.jobportal.exceptionhandling.UserNotFoundException;
-import com.example.jobportal.requestdto.CompanyRequestDto;
 import com.example.jobportal.requestdto.JobRequestDto;
-import com.example.jobportal.requestdto.UserRequestDto;
-import com.example.jobportal.responsedto.CompanyResponseDto;
 import com.example.jobportal.responsedto.JobResponseDto;
-import com.example.jobportal.service.CompanyService;
 import com.example.jobportal.service.JobService;
 import com.example.jobportal.utility.ResponseStructure;
 
