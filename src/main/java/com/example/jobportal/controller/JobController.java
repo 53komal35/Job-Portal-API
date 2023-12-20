@@ -20,6 +20,7 @@ import com.example.jobportal.exceptionhandling.JobNotFoundException;
 import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.requestdto.CompanyRequestDto;
 import com.example.jobportal.requestdto.JobRequestDto;
+import com.example.jobportal.requestdto.UserRequestDto;
 import com.example.jobportal.responsedto.CompanyResponseDto;
 import com.example.jobportal.responsedto.JobResponseDto;
 import com.example.jobportal.service.CompanyService;
@@ -44,6 +45,8 @@ public class JobController {
 		 return jobService.insertJOb(jobReq,compId);
 		
 	}
+	
+	
 	@GetMapping("/designations/{designation}/jobs")  
 	public ResponseEntity<ResponseStructure<List<JobResponseDto>>> findJobByDesignation(@PathVariable String designation) throws JobNotFoundException 
 			
@@ -53,6 +56,29 @@ public class JobController {
 		
 	}
 	
-
+	@GetMapping("/locations/{loc}/jobs")  
+	public ResponseEntity<ResponseStructure<List<JobResponseDto>>> findJobByLocation(@PathVariable String loc) throws JobNotFoundException 
+			
+	{
+		
+		 return jobService.findJObLocation(loc);
+		
+	}
 	
+
+	@PutMapping("/jobs/{jobId}")  
+	public ResponseEntity<ResponseStructure<String>> updateJobById(@RequestBody @Valid JobRequestDto jobReq,@PathVariable int jobId) throws JobNotFoundException
+	{
+		
+		 return jobService.updateJobById(jobReq,jobId);
+		
+	}
+	
+	
+	
+	
+//	skills 
+//	List of skills 
 }
+
+

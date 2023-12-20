@@ -12,8 +12,12 @@ import com.example.jobportal.entity.Job;
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer> {
 	
-	@Query("select j from Job j where j.designation LIKE %?1%" )
+	@Query("select j from Job j where j.designation LIKE %?1" )
 	public List<Job> findByDesignation (String design);
+
+	
+	@Query("select j from Job j where j.location LIKE %?1" )
+	public List<Job> findByLocation(String loc);
 	
 
 
