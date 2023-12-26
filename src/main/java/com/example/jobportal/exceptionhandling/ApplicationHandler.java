@@ -101,5 +101,26 @@ public class ApplicationHandler extends ResponseEntityExceptionHandler {
 
 	}
 	
+	@ExceptionHandler(ProjectNotFoundException.class)
+	public ResponseEntity<ErrorStructure<String>> projectNotFoundById(ProjectNotFoundException cnf) {
+		ErrorStructure<String> es = new ErrorStructure<String>();
+		es.setStatusCode(HttpStatus.NOT_FOUND.value());
+		es.setMessage(cnf.getMess()); // message whate we threw in service
+		es.setErrordata(" PROJECT WITH GIVEN ID NOT PRESENT ");
+
+		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
+
+	}
+	
+	@ExceptionHandler(SkillAlreadyExistException.class)
+	public ResponseEntity<ErrorStructure<String>> skillExist(SkillAlreadyExistException cnf) {
+		ErrorStructure<String> es = new ErrorStructure<String>();
+		es.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
+		es.setMessage(cnf.getMess()); // message whate we threw in service
+		es.setErrordata("SKILL ALREADY EXIST ");
+
+		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_ACCEPTABLE);
+
+	}
 
 }

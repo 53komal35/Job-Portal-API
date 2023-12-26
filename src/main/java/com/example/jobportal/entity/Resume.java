@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Component
@@ -20,9 +21,23 @@ public class Resume {
 	private int resumeId;
 	private String objective;
 	
-	@OneToOne(mappedBy = "resumeMap")
+	@OneToOne
 	private User userMap;
 	
+	@ManyToMany
+	private List<Skill> skillMap;
+	
+	@OneToMany(mappedBy = "resumeMap")
+	private List<Project> projectMap;
+	
+	public List<Project> getProjectMap() {
+		return projectMap;
+	}
+
+	public void setProjectMap(List<Project> projectMap) {
+		this.projectMap = projectMap;
+	}
+
 	public User getUserMap() {
 		return userMap;
 	}
@@ -31,8 +46,7 @@ public class Resume {
 		this.userMap = userMap;
 	}
 
-	@ManyToMany
-	private List<Skill> skillMap;
+
 
 	public int getResumeId() {
 		return resumeId;

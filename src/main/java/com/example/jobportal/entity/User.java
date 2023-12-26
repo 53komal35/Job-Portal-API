@@ -30,7 +30,7 @@ public class User {
 	@OneToMany(mappedBy = "userMap")
 	private List<Company> compMap; 
 	
-	@OneToOne
+	@OneToOne(mappedBy = "userMap")
 	private Resume resumeMap;
 	
 	public Resume getResumeMap() {

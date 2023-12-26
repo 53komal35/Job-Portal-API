@@ -15,6 +15,9 @@ public class Skill {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int skillId;
 	private String skillName;
+	
+	
+	
 	public int getSkillId() {
 		return skillId;
 	}

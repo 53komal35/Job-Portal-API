@@ -47,7 +47,7 @@ public class CompanyController {
 	}
 	
 	@PutMapping("/companies/{compId}")  
-	public ResponseEntity<ResponseStructure<String>> updateUser(@RequestBody @Valid CompanyRequestDto compReq,@PathVariable int compId) throws CompanyNotFoundException 
+	public ResponseEntity<ResponseStructure<String>> updateUser(@RequestBody CompanyRequestDto compReq,@PathVariable int compId) throws CompanyNotFoundException 
 	{
 		
 		 return compService.updateCompany(compReq,compId);

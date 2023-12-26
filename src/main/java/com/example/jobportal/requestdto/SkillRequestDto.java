@@ -5,13 +5,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class SkillRequestDto {
 
-	private String skillName;
+	private String[] skills;
+
+	public String[] getSkills() {
+		return skills;
+	}
+
+	public void setSkills(String[] skills) {
+		this.skills = skills;
+	}
 	
 
-	public String getSkillName() {
-		return skillName;
-	}
-	public void setSkillName(String skillName) {
-		this.skillName = skillName;
-	}
+
 }

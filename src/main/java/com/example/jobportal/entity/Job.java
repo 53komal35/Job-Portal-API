@@ -20,6 +20,8 @@ public class Job {
 	private String location;
 	private double ctc;
 	
+	//
+	
 	@ManyToOne
 	private Company compMap;
 
