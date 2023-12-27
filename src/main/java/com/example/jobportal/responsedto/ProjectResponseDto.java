@@ -1,5 +1,7 @@
 package com.example.jobportal.responsedto;
 
+import java.util.HashMap;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,10 +15,16 @@ public class ProjectResponseDto {
   private  String website;
   private String sourceCode;
   
+  private HashMap<String, String> options;
   
   
   
-  
+public HashMap<String, String> getOptions() {
+	return options;
+}
+public void setOptions(HashMap<String, String> options) {
+	this.options = options;
+}
 public int getProId() {
 	return proId;
 }

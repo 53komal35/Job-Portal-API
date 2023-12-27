@@ -1,5 +1,8 @@
 package com.example.jobportal.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,87 +24,153 @@ import com.example.jobportal.utility.ResponseStructure;
 public class ProjectService {
 	@Autowired
 	private ProjectRepository proRepo;
-    @Autowired
+	@Autowired
 	private ResumeRepository resumRepo;
 
 
-   private Project convertToProject(ProjectRequestDto proReq,Project proj)
-   {
-	   proj.setDescription(proReq.getDescription());
-	   proj.setProjectName(proReq.getProjectName());
-	   proj.setSourceCode(proReq.getSourceCode());
-	   proj.setTechStack(proReq.getTechStack());
-	   proj.setWebsite(proReq.getWebsite());
-	   
-	   return proj;
-   }
-   
-   private ProjectResponseDto convertToProjectResponse (Project pro)
-   {    ProjectResponseDto dto = new ProjectResponseDto();
-	   dto.setDescription(pro.getDescription());
-	   dto.setProId(pro.getProId());
-	   dto.setProjectName(pro.getProjectName());
-	   dto.setSourceCode(pro.getSourceCode());
-	   dto.setTechStack(pro.getTechStack());
-	   dto.setWebsite(pro.getWebsite());
-	   return dto;
- 
-   }
+	private Project convertToProject(ProjectRequestDto proReq,Project proj)
+	{
+		proj.setDescription(proReq.getDescription());
+		proj.setProjectName(proReq.getProjectName());
+		proj.setSourceCode(proReq.getSourceCode());
+		proj.setTechStack(proReq.getTechStack());
+		proj.setWebsite(proReq.getWebsite());
 
-    
-    
-    
+		return proj;
+	}
+
+	private ProjectResponseDto convertToProjectResponse (Project pro)
+	{    ProjectResponseDto dto = new ProjectResponseDto();
+	dto.setDescription(pro.getDescription());
+	dto.setProId(pro.getProId());
+	dto.setProjectName(pro.getProjectName());
+	dto.setSourceCode(pro.getSourceCode());
+	dto.setTechStack(pro.getTechStack());
+	dto.setWebsite(pro.getWebsite());
+	return dto;
+
+	}
+
+
+
+
 	public ResponseEntity<ResponseStructure<String>> insertProject(ProjectRequestDto proReq,int resumId) throws ResumeNotFoundException 
-			 {
-		
-		   Optional<Resume> optResum = resumRepo.findById(resumId);
-		
-		   if(optResum.isPresent()) {
-			   Resume resume = optResum.get();
-		                
-			          Project project = convertToProject(proReq, new Project());
-			          project.setResumeMap(resume);
-			          proRepo.save(project);
-	                   
-			         // resumRepo.save(resume);
-				ResponseStructure<String> respStruc = new ResponseStructure<>();
-				respStruc.setStatusCode(HttpStatus.CREATED.value());
-				respStruc.setMessage(" Project data saved successfully");
-				respStruc.setData("  PROJECT  ADDED  SUCCESSFULLY");
+	{
 
-				return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
-				
+		Optional<Resume> optResum = resumRepo.findById(resumId);
+
+		if(optResum.isPresent()) {
+			Resume resume = optResum.get();
+
+			Project project = convertToProject(proReq, new Project());
+			project.setResumeMap(resume);
+			proRepo.save(project);
+
+			// resumRepo.save(resume);
+			ResponseStructure<String> respStruc = new ResponseStructure<>();
+			respStruc.setStatusCode(HttpStatus.CREATED.value());
+			respStruc.setMessage(" Project data saved successfully");
+			respStruc.setData("  PROJECT  ADDED  SUCCESSFULLY");
+
+			return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
+
 		}  else throw new ResumeNotFoundException("resume with given id not present");
-		
-		
+
+
+	}
+
+
+
+
+	public ResponseEntity<ResponseStructure<ProjectResponseDto>> findProjectById(int projId) throws ProjectNotFoundException 
+	{
+		Optional<Project> optPro = proRepo.findById(projId);
+
+		if(optPro.isPresent()) {
+			Project project = optPro.get();
+
+
+			ProjectResponseDto dto = convertToProjectResponse(project);
+
+			HashMap<String,String> hashMap = new HashMap<>();
+			hashMap.put("Applicant", "/resumes/"+project.getResumeMap().getResumeId());
+			dto.setOptions(hashMap);
+			ResponseStructure<ProjectResponseDto> respStruc = new ResponseStructure<>();
+			respStruc.setStatusCode(HttpStatus.CREATED.value());
+			respStruc.setMessage(" Project data Found successfully");
+			respStruc.setData(dto);
+
+			return new ResponseEntity<ResponseStructure<ProjectResponseDto>>(respStruc, HttpStatus.CREATED);
+
+		} else throw new ProjectNotFoundException("Project with given Id Not Found"); 
+
+
 	}
 
 	public ResponseEntity<ResponseStructure<String>> updateProject(ProjectRequestDto proReq, int projectId) throws ProjectNotFoundException {
-		
-		Optional<Project> optpro = proRepo.findById(projectId);
-		 
-		   if(optpro.isPresent()) {
-			          
-			   Project oldProject= optpro.get();
-		                
-			         Project newProject = convertToProject(proReq, oldProject);
-			         
-	                   proRepo.save(newProject);
-			        
-				ResponseStructure<String> respStruc = new ResponseStructure<>();
-				respStruc.setStatusCode(HttpStatus.CREATED.value());
-				respStruc.setMessage(" Project data updated successfully");
-				respStruc.setData("  PROJECT  UPDATED SUCCESSFULLY");
 
-				return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
-				
+		Optional<Project> optpro = proRepo.findById(projectId);
+
+		if(optpro.isPresent()) {
+
+			Project oldProject= optpro.get();
+
+			Project newProject = convertToProject(proReq, oldProject);
+
+			proRepo.save(newProject);
+
+			ResponseStructure<String> respStruc = new ResponseStructure<>();
+			respStruc.setStatusCode(HttpStatus.CREATED.value());
+			respStruc.setMessage(" Project data updated successfully");
+			respStruc.setData("  PROJECT  UPDATED SUCCESSFULLY");
+
+			return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
+
 		}  else throw new ProjectNotFoundException(" project  with given id not present");
-		
+
+	}
+
+	public ResponseEntity<ResponseStructure<List<ProjectResponseDto>>> findByProjectByResume(int resumeId) throws ResumeNotFoundException, ProjectNotFoundException {
+
+
+		Optional<Resume> optiResume = resumRepo.findById(resumeId);
+
+		if(optiResume.isPresent()) {
+
+			Resume resume = optiResume.get();
+
+			List<Project> projectList = resume.getProjectMap();
+
+			if(!projectList.isEmpty()) {
+
+				ArrayList<ProjectResponseDto> responseList = new ArrayList<ProjectResponseDto>();
+				HashMap<String,String> hashMap = new HashMap<>();
+				for(Project pl:projectList)
+				{
+
+					ProjectResponseDto dto = convertToProjectResponse(pl);
+					hashMap.put("Developer Profile","/resumes/"+resume.getResumeId());
+					dto.setOptions(hashMap);
+					responseList.add(dto);
+
+				}
+
+				ResponseStructure<List<ProjectResponseDto>> respStruc = new ResponseStructure<>();
+				respStruc.setStatusCode(HttpStatus.CREATED.value());
+				respStruc.setMessage(" Project data Found successfully");
+				respStruc.setData(responseList);
+
+				return new ResponseEntity<ResponseStructure<List<ProjectResponseDto>>>(respStruc, HttpStatus.CREATED);
+			} else throw new ProjectNotFoundException(" this user has no projects to display");
+
+		} else throw new ResumeNotFoundException(" Resume with given Id Not Found"); 
+
+
 	}
 
 
-	
-	
+
+
 
 
 }
