@@ -168,6 +168,26 @@ public class ProjectService {
 
 	}
 
+	public ResponseEntity<ResponseStructure<String>> deleteProject(int projectId) throws ProjectNotFoundException {
+		Optional<Project> optpro = proRepo.findById(projectId);
+
+		if(optpro.isPresent()) {
+
+			
+
+		  proRepo.deleteById(projectId);
+
+			ResponseStructure<String> respStruc = new ResponseStructure<>();
+			respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+			respStruc.setMessage(" Project data deleted successfully");
+			respStruc.setData("  PROJECT  DELETED SUCCESSFULLY");
+
+			return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.ACCEPTED);
+
+		}  else throw new ProjectNotFoundException(" project  with given id not present");
+
+	}
+
 
 
 

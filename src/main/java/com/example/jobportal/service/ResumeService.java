@@ -1,6 +1,8 @@
 package com.example.jobportal.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,21 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.jobportal.entity.Company;
-import com.example.jobportal.entity.Job;
 import com.example.jobportal.entity.Resume;
+import com.example.jobportal.entity.Skill;
 import com.example.jobportal.entity.User;
 import com.example.jobportal.enums.UserRole;
-import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.IllegalAccssException;
-import com.example.jobportal.exceptionhandling.JobNotFoundException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
+import com.example.jobportal.exceptionhandling.SkillNotFoundException;
 import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.repository.ResumeRepository;
 import com.example.jobportal.repository.SkillRepository;
 import com.example.jobportal.repository.UserRepository;
 import com.example.jobportal.requestdto.ResumeRequestDto;
-import com.example.jobportal.responsedto.CompanyResponseDto;
 import com.example.jobportal.responsedto.ResumeResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
 
@@ -33,6 +32,8 @@ public class ResumeService {
 	private ResumeRepository resumeRepo;
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private SkillRepository skillRepo;
 
 	private Resume convertToResume(ResumeRequestDto resumeRq, Resume resume) {
 
@@ -93,6 +94,8 @@ public class ResumeService {
 
 			HashMap<String, String> hasmap = new HashMap<>();
 			hasmap.put("user","/users/"+ resume.getUserMap().getUserId());
+			hasmap.put("Projects","/resumes/"+resume.getResumeId()+"/projects");
+			hasmap.put("Skills", "resumes/"+resume.getResumeId()+"/skills");
 			dto.setOptions(hasmap);
 
 			ResponseStructure<ResumeResponseDto> responseStruct = new ResponseStructure<ResumeResponseDto>();
@@ -134,6 +137,52 @@ public class ResumeService {
 			else
 				throw new ResumeNotFoundException(" resume not found with this Id");
 		}
+
+	public ResponseEntity<ResponseStructure<List<ResumeResponseDto>>> findResumeByskillName(String skillName) throws ResumeNotFoundException, SkillNotFoundException {
+		   
+		Skill skill = skillRepo.findSkillByname(skillName.toLowerCase());
+	
+
+		if (skill!=null) {
+			                 
+			
+			          List<Resume> resumeList = resumeRepo.findAllBySkillMap(skill);
+			           List<ResumeResponseDto> resumeRespList = new ArrayList<>();
+           if(!resumeList.isEmpty()) {
+		                    
+        	   for(Resume res:resumeList)
+        	   {
+        		   ResumeResponseDto dto = convertToResumeRespnse(res);
+        		    HashMap<String,String> hashMap = new HashMap<>();
+        		    hashMap.put("Applicant", "/users/"+res.getUserMap().getUserId());
+        		 //   hasmap.put("user","/users/"+ resume.getUserMap().getUserId());
+        			hashMap.put("Projects","/resumes/"+res.getResumeId()+"/projects");
+        			hashMap.put("Skills", "resumes/"+res.getResumeId()+"/skills");
+        		     hashMap.put(skillName, skillName);
+        		   dto.setOptions(hashMap);
+        		   resumeRespList.add(dto);
+        		   
+        		   
+        	   }
+        	   
+
+
+			ResponseStructure<List<ResumeResponseDto>> responseStruct = new ResponseStructure<>();
+			responseStruct.setMessage(" resume found successfully");
+			responseStruct.setStatusCode(HttpStatus.FOUND.value());
+			responseStruct.setData(resumeRespList);
+
+			return new ResponseEntity<ResponseStructure<List<ResumeResponseDto>>>(responseStruct, HttpStatus.FOUND);
+           }
+           
+           else throw new ResumeNotFoundException("Resumes with this Skill not present");
+
+		}
+
+		else
+			throw new SkillNotFoundException(" skill with the given name  not present");
+
+	}
 
 
 	

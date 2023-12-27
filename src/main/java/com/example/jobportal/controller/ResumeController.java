@@ -1,5 +1,7 @@
 package com.example.jobportal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.jobportal.exceptionhandling.IllegalAccssException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
+import com.example.jobportal.exceptionhandling.SkillNotFoundException;
 import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.requestdto.ResumeRequestDto;
 import com.example.jobportal.responsedto.ResumeResponseDto;
@@ -43,6 +46,14 @@ public class ResumeController {
 	{
 		
 		 return resumeService.findResumeById(resumeId);
+		
+	}
+	@GetMapping("/skill/{skillName}/resumes")  
+	public ResponseEntity<ResponseStructure<List<ResumeResponseDto>>> findResumeBySkillName(@PathVariable String skillName
+			) throws ResumeNotFoundException, SkillNotFoundException 
+	{
+		
+		 return resumeService.findResumeByskillName(skillName);
 		
 	}
 	
