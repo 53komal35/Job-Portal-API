@@ -15,10 +15,13 @@ import com.example.jobportal.entity.Resume;
 import com.example.jobportal.entity.WorkExperience;
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
+import com.example.jobportal.exceptionhandling.WorkExperienceFoundException;
 import com.example.jobportal.repository.ResumeRepository;
 import com.example.jobportal.repository.WorkExperienceRepository;
 import com.example.jobportal.requestdto.WorkExperienceRequestDto;
 import com.example.jobportal.utility.ResponseStructure;
+
+import jakarta.validation.Valid;
 
 @Service
 public class WorkExperienceService {
@@ -84,6 +87,49 @@ public class WorkExperienceService {
 		}
 
 		else throw new ResumeNotFoundException(" Resume with given Id not Present");
+
+
+	}
+
+
+	public ResponseEntity<ResponseStructure<String>> updateWork(@Valid WorkExperienceRequestDto reqWork, int workId) throws WorkExperienceFoundException {
+              
+		Optional<WorkExperience> optWork = workRepo.findById(workId);
+		
+			if (optWork.isPresent()) {
+				
+				 WorkExperience workOld = optWork.get();
+
+				          WorkExperience workNew = convertToWork(reqWork, workOld);
+				          
+				          
+				         if(workNew.getJobStatus()==true) {workNew.setEndDate(null);}
+				          
+				          Period per;
+				          if( workNew.getEndDate()!=null)
+				          {
+				        	  
+				        	  per = Period.between(workNew.getStartDate(),  workNew.getEndDate());
+				        	   workNew.setYearsOfExperience(per+"");
+				        	       
+				          }
+				         
+				          else {
+				        	   per = Period.between(workNew.getStartDate(),LocalDate.now());
+			        	       workNew.setYearsOfExperience(per+"");
+			        	      
+				          }
+				
+				          workRepo.save(workNew);
+				ResponseStructure<String> respStruc = new ResponseStructure<>();
+				respStruc.setStatusCode(HttpStatus.CREATED.value());
+				respStruc.setMessage(" work data updated successfully");
+				respStruc.setData(" WORKEXPERIENCE UPDATED SUCCESSFULLY");
+	 
+				return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
+			}
+
+			else throw new WorkExperienceFoundException(" workxperince  with given Id not Present");
 
 
 	}
