@@ -112,6 +112,17 @@ public class ApplicationHandler extends ResponseEntityExceptionHandler {
 
 	}
 	
+	@ExceptionHandler(WorkExperienceFoundException.class)
+	public ResponseEntity<ErrorStructure<String>> projectNotFoundById(WorkExperienceFoundException cnf) {
+		ErrorStructure<String> es = new ErrorStructure<String>();
+		es.setStatusCode(HttpStatus.NOT_FOUND.value());
+		es.setMessage(cnf.getMess()); // message whate we threw in service
+		es.setErrordata(" WORKEXPERIENCE WITH GIVEN ID NOT PRESENT ");
+
+		return new ResponseEntity<ErrorStructure<String>>(es, HttpStatus.NOT_FOUND);
+
+	}
+	
 	@ExceptionHandler(SkillAlreadyExistException.class)
 	public ResponseEntity<ErrorStructure<String>> skillExist(SkillAlreadyExistException cnf) {
 		ErrorStructure<String> es = new ErrorStructure<String>();

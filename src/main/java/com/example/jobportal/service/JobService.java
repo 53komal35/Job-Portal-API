@@ -55,7 +55,7 @@ public class JobService {
 
 	}
 
-	public ResponseEntity<ResponseStructure<String>> insertJOb(@Valid JobRequestDto jobReq, int compId) throws CompanyNotFoundException {
+	public ResponseEntity<ResponseStructure<String>> insertJOb( JobRequestDto jobReq, int compId) throws CompanyNotFoundException {
 
 		Optional<Company> optComp = compRepo.findById(compId);
 

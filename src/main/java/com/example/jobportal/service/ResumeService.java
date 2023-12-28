@@ -184,6 +184,26 @@ public class ResumeService {
 
 	}
 
+	public ResponseEntity<ResponseStructure<String>> DeleteResume(int resumeId) throws ResumeNotFoundException {
+		    Optional<Resume> optiRes = resumeRepo.findById(resumeId);
+
+			if (optiRes.isPresent()) {
+				
+				
+				    resumeRepo.deleteById(resumeId);
+
+					ResponseStructure<String> respStruc = new ResponseStructure<>();
+					respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+					respStruc.setMessage(" Resume data deleted successfully");
+					respStruc.setData(" 1 RESUME DELETED  SUCCESSFULLY");
+
+					return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.ACCEPTED);
+				}
+
+				else
+					throw new ResumeNotFoundException(" resume not found with this Id");
+	}
+
 
 	
 
