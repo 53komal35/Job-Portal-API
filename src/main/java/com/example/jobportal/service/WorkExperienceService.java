@@ -2,6 +2,9 @@ package com.example.jobportal.service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.jobportal.entity.Company;
 import com.example.jobportal.entity.Job;
+import com.example.jobportal.entity.Project;
 import com.example.jobportal.entity.Resume;
 import com.example.jobportal.entity.WorkExperience;
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
@@ -19,6 +23,7 @@ import com.example.jobportal.exceptionhandling.WorkExperienceFoundException;
 import com.example.jobportal.repository.ResumeRepository;
 import com.example.jobportal.repository.WorkExperienceRepository;
 import com.example.jobportal.requestdto.WorkExperienceRequestDto;
+import com.example.jobportal.responsedto.WorkExperienceResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
 
 import jakarta.validation.Valid;
@@ -30,6 +35,7 @@ public class WorkExperienceService {
 	private ResumeRepository resumRepo;
     @Autowired
     private WorkExperienceRepository workRepo;
+	private WorkExperienceResponseDto convertToWorkDto;
     
     
     
@@ -48,6 +54,21 @@ public class WorkExperienceService {
   	
     }
     
+    private WorkExperienceResponseDto convertToWorkDto(WorkExperience work)
+    {
+    	WorkExperienceResponseDto dto = new WorkExperienceResponseDto();
+    	dto.setDescription(work.getDescription());
+    	dto.setEndDate(work.getEndDate());
+    	dto.setJobRole(work.getJobRole());
+    	dto.setJobStatus(work.getJobStatus());
+    	dto.setOrganisation(work.getOrganisation());
+    	dto.setStartDate(work.getStartDate());
+    	dto.setYearsOfExperience(work.getYearsOfExperience());
+    	dto.setExpId(work.getExpId());
+    
+    return dto;
+   	
+    }
     
 	public ResponseEntity<ResponseStructure<String>> insertWork(WorkExperienceRequestDto reqWork, int resumId) throws ResumeNotFoundException {
 
@@ -131,6 +152,72 @@ public class WorkExperienceService {
 
 			else throw new WorkExperienceFoundException(" workxperince  with given Id not Present");
 
+
+	}
+
+
+	public ResponseEntity<ResponseStructure<WorkExperienceResponseDto>> findWorkByWorkId(int workId) throws WorkExperienceFoundException {
+		Optional<WorkExperience> optWork = workRepo.findById(workId);
+		
+		if (optWork.isPresent()) {
+			
+			 WorkExperience workOld = optWork.get();
+
+			        WorkExperienceResponseDto dto = convertToWorkDto(workOld);
+			        HashMap<String,String> hashMap = new HashMap<>();
+			        
+			        hashMap.put("Employee","/resumes/"+workOld.getAssociatedResume().getResumeId());
+			        dto.setOptions(hashMap);
+			          
+			
+			
+			        
+			ResponseStructure<WorkExperienceResponseDto> respStruc = new ResponseStructure<>();
+			respStruc.setStatusCode(HttpStatus.FOUND.value());
+			respStruc.setMessage(" work date fetched successfully");
+			respStruc.setData(dto);
+ 
+			return new ResponseEntity<ResponseStructure<WorkExperienceResponseDto>>(respStruc, HttpStatus.FOUND);
+		}
+
+		else throw new WorkExperienceFoundException(" workxperince  with given Id not Present");
+
+	}
+
+	public ResponseEntity<ResponseStructure<List<WorkExperienceResponseDto>>> findWorkByResumeId(int resumeId) throws ResumeNotFoundException, WorkExperienceFoundException {
+		                     Optional<Resume> optResume = resumRepo.findById(resumeId);
+		if (optResume.isPresent()) {
+			
+                          Resume resume = optResume.get();
+                          
+                          List<WorkExperience> workList = resume.getWorkList();
+                          if(!workList.isEmpty()) {
+                          List<WorkExperienceResponseDto> responseList = new ArrayList<>();
+                          for(WorkExperience wk: workList)
+                          {
+                        	  
+                        	  WorkExperienceResponseDto dto = convertToWorkDto(wk);
+                        	  HashMap<String,String> hashMap = new HashMap<>();
+          			        
+          			        hashMap.put("Developer","/resumes/"+wk.getAssociatedResume().getResumeId());
+                        	  dto.setOptions(hashMap);
+                        	  responseList.add(dto);
+                        	  
+                          }
+                   
+			ResponseStructure<List<WorkExperienceResponseDto>> respStruc = new ResponseStructure<>();
+			respStruc.setStatusCode(HttpStatus.FOUND.value());
+			respStruc.setMessage(" work date fetched successfully");
+			respStruc.setData(responseList);
+ 
+			return new ResponseEntity<ResponseStructure<List<WorkExperienceResponseDto>>>(respStruc, HttpStatus.FOUND);
+                          }
+                          
+                          
+                          else throw new WorkExperienceFoundException("Works for this resume not present");
+		}
+
+		else throw new ResumeNotFoundException(" resume  with given Id not Present");
 
 	}
     

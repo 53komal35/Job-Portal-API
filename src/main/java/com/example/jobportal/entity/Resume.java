@@ -30,6 +30,19 @@ public class Resume {
 	@OneToMany(mappedBy = "resumeMap")
 	private List<Project> projectMap;
 	
+	@OneToMany(mappedBy = "associatedResume")
+	private List<WorkExperience> workList;
+	
+	
+	
+	public List<WorkExperience> getWorkList() {
+		return workList;
+	}
+
+	public void setWorkList(List<WorkExperience> workList) {
+		this.workList = workList;
+	}
+
 	public List<Project> getProjectMap() {
 		return projectMap;
 	}

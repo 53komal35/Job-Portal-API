@@ -95,7 +95,8 @@ public class ResumeService {
 			HashMap<String, String> hasmap = new HashMap<>();
 			hasmap.put("user","/users/"+ resume.getUserMap().getUserId());
 			hasmap.put("Projects","/resumes/"+resume.getResumeId()+"/projects");
-			hasmap.put("Skills", "resumes/"+resume.getResumeId()+"/skills");
+			hasmap.put("Skills", "/resumes/"+resume.getResumeId()+"/skills");
+			hasmap.put("Works","/resumes/"+resume.getResumeId()+"/works");
 			dto.setOptions(hasmap);
 
 			ResponseStructure<ResumeResponseDto> responseStruct = new ResponseStructure<ResumeResponseDto>();
