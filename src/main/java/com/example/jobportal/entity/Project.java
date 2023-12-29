@@ -1,8 +1,11 @@
 package com.example.jobportal.entity;
 
 
+import java.util.Set;
+
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +20,8 @@ public class Project {
 	  @Id
 	private int proId;
   private String projectName;
-  private String[] techStack;
+  @ElementCollection
+  private Set<String> techStack;
   private String description;
   private  String website;
   private String sourceCode;
@@ -45,10 +49,10 @@ public String getProjectName() {
 public void setProjectName(String projectName) {
 	this.projectName = projectName;
 }
-public String[] getTechStack() {
+public Set<String> getTechStack() {
 	return techStack;
 }
-public void setTechStack(String[] techStack) {
+public void setTechStack(Set<String> techStack) {
 	this.techStack = techStack;
 }
 public String getDescription() {

@@ -20,6 +20,7 @@ public class WorkExperienceResponseDto {
 	private String yearsOfExperience;
 	
 	private HashMap<String,String> options;
+	
 	public HashMap<String, String> getOptions() {
 		return options;
 	}

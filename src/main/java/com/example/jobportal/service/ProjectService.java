@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,12 +35,28 @@ public class ProjectService {
 		proj.setDescription(proReq.getDescription());
 		proj.setProjectName(proReq.getProjectName());
 		proj.setSourceCode(proReq.getSourceCode());
-		proj.setTechStack(proReq.getTechStack());
+		proj.setTechStack(convertToStringArrayIgnoreCase(proReq.getTechStack()));
 		proj.setWebsite(proReq.getWebsite());
 
 		return proj;
 	}
 
+	private Set<String> convertToStringArrayIgnoreCase(Set<String> techStck)
+	{
+		TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		
+		for(String tech:techStck)
+		{
+			
+			treeSet.add(tech);
+			
+		}
+		
+		//String[] array = (String[]) treeSet.toArray();
+		
+		return treeSet;
+	}
+	
 	private ProjectResponseDto convertToProjectResponse (Project pro)
 	{    ProjectResponseDto dto = new ProjectResponseDto();
 	dto.setDescription(pro.getDescription());
