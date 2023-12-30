@@ -1,5 +1,6 @@
 package com.example.jobportal.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
 import com.example.jobportal.repository.EduacationRepository;
 import com.example.jobportal.repository.ResumeRepository;
 import com.example.jobportal.requestdto.EducationRequestDto;
+import com.example.jobportal.responsedto.EducationResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
 
 import jakarta.validation.Valid;
@@ -40,6 +42,24 @@ public class EducationService {
 		edu.setStream(eduReq.getStream());
 		edu.setDegreeType(eduReq.getDegreeType());
 		return edu;
+	}
+	
+	private EducationResponseDto convertToEducResponse (Education edu)
+	{
+		EducationResponseDto dto = new EducationResponseDto();
+		dto.setDegreeType(edu.getDegreeType());
+		dto.setEduId(edu.getEduId());
+		dto.setEduType(edu.getEduType());
+		dto.setEnddate(edu.getEnddate());
+		dto.setGradStatus(edu.getGradStatus());
+		dto.setInsituteName(edu.getInsituteName());
+		dto.setLocation(edu.getLocation());
+		dto.setPercentageOrCGPA(edu.getPercentageOrCGPA());
+		dto.setStartDate(edu.getStartDate());
+		dto.setStream(edu.getStream());
+	
+		
+		return dto;
 	}
 
 
@@ -125,6 +145,34 @@ public class EducationService {
 
 		else throw new EductationNotFoundException(" Education with given Id not present");
 
+
+	}
+
+
+
+
+	public ResponseEntity<ResponseStructure<EducationResponseDto>> findEducationById(int eduId) throws EductationNotFoundException {
+        Optional<Education> optEdu = eduRepo.findById(eduId);
+        
+        
+if(optEdu.isPresent()) {
+	
+	                    Education education = optEdu.get();
+	                   EducationResponseDto dto = convertToEducResponse(education);
+           HashMap<String,String> hashMap = new HashMap<>();
+           
+           hashMap.put("Applicant","/resumes/"+education.getAssociatedResume().getResumeId());
+           dto.setOptions(hashMap);
+
+	ResponseStructure<EducationResponseDto> respStruc = new ResponseStructure<>();
+	respStruc.setStatusCode(HttpStatus.FOUND.value());
+	respStruc.setMessage(" education data fetched  successfully");
+	respStruc.setData(dto);
+
+	return new ResponseEntity<ResponseStructure<EducationResponseDto>>(respStruc, HttpStatus.FOUND);
+}
+
+else throw new EductationNotFoundException(" Education with given Id not present");
 
 	}
 

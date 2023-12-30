@@ -2,6 +2,7 @@ package com.example.jobportal.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,6 +14,7 @@ import com.example.jobportal.exceptionhandling.EductationNotFoundException;
 import com.example.jobportal.exceptionhandling.IllegalAccssException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
 import com.example.jobportal.requestdto.EducationRequestDto;
+import com.example.jobportal.responsedto.EducationResponseDto;
 import com.example.jobportal.service.EducationService;
 import com.example.jobportal.utility.ResponseStructure;
 
@@ -43,6 +45,17 @@ public class EducationController {
 		 return educationService.updateEducation(eduReq,eduId);
 		
 	}
+	
+	@GetMapping("/educations/{eduId}")  
+	public ResponseEntity<ResponseStructure<EducationResponseDto>> findEducationById(@PathVariable int eduId 
+			) throws EductationNotFoundException  
+	{
+		
+		 return educationService.findEducationById(eduId);
+	}		
+	
+
+	
   
 	
 }
