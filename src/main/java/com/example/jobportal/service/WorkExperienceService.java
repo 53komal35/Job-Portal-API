@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.jobportal.entity.Resume;
 import com.example.jobportal.entity.WorkExperience;
+import com.example.jobportal.exceptionhandling.EductationNotFoundException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
 import com.example.jobportal.exceptionhandling.WorkExperienceFoundException;
 import com.example.jobportal.repository.ResumeRepository;
@@ -214,6 +215,53 @@ public class WorkExperienceService {
 		}
 
 		else throw new ResumeNotFoundException(" resume  with given Id not Present");
+
+	}
+
+	public ResponseEntity<ResponseStructure<String>> deleteWorkByResumeId(int resumeId, int workId) throws EductationNotFoundException, WorkExperienceFoundException, ResumeNotFoundException {
+	       
+			 Optional<Resume> optResume = resumRepo.findById(resumeId);
+			
+				if (optResume.isPresent()) {
+					
+					             Resume resume = optResume.get();
+					             
+					             List<WorkExperience> workList = resume.getWorkList();
+					             
+					             if(!workList.isEmpty()) {
+					            	 
+					            	  boolean flag =false;
+					            	  
+					            	 for(WorkExperience wk:workList)
+					            	 {
+					            		 
+					            		 if(wk.getExpId()==workId)
+					            		 { workList.remove(wk);
+					            			 workRepo.deleteById(workId); 
+					            			
+					            			 flag=true;
+					            			 break;
+					            			 
+					            		 }
+					            		 
+					            		 
+					            	 }
+					            	 if(flag==false) throw new EductationNotFoundException(" work  with this Id not found ");
+					            	 
+					            	 
+					  
+					ResponseStructure<String> respStruc = new ResponseStructure<>();
+					respStruc.setStatusCode(HttpStatus.CREATED.value());
+					respStruc.setMessage(" work data deleted successfully");
+					respStruc.setData(" WORKEXPERIENCE DELETED SUCCESSFULLY");
+		 
+					return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.CREATED);
+					             } 
+					             
+					             else throw new WorkExperienceFoundException("Works in this resume not found");
+				}
+
+				else throw new ResumeNotFoundException(" resume  with given Id not Present");
 
 	}
     
