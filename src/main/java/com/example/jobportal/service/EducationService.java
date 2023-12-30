@@ -81,7 +81,7 @@ public class EducationService {
              
              if(!eduList.isEmpty()) {
 			
-			 for(Education ed: eduList) {
+	  		 for(Education ed: eduList) {
 				 
 				 
 				if( eduType==ed.getEduType()&&ed.getEduType()==EducationType.SSLC) {
@@ -167,6 +167,7 @@ if(optEdu.isPresent()) {
 
 	ResponseStructure<EducationResponseDto> respStruc = new ResponseStructure<>();
 	respStruc.setStatusCode(HttpStatus.FOUND.value());
+	
 	respStruc.setMessage(" education data fetched  successfully");
 	respStruc.setData(dto);
 
