@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jobportal.exceptionhandling.IllegalAccssException;
 import com.example.jobportal.exceptionhandling.ProjectNotFoundException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
-import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.requestdto.ProjectRequestDto;
 import com.example.jobportal.responsedto.ProjectResponseDto;
 import com.example.jobportal.service.ProjectService;

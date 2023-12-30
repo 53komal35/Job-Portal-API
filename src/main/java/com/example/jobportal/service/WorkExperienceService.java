@@ -12,12 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.jobportal.entity.Company;
-import com.example.jobportal.entity.Job;
-import com.example.jobportal.entity.Project;
 import com.example.jobportal.entity.Resume;
 import com.example.jobportal.entity.WorkExperience;
-import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
 import com.example.jobportal.exceptionhandling.WorkExperienceFoundException;
 import com.example.jobportal.repository.ResumeRepository;
@@ -35,7 +31,7 @@ public class WorkExperienceService {
 	private ResumeRepository resumRepo;
     @Autowired
     private WorkExperienceRepository workRepo;
-	private WorkExperienceResponseDto convertToWorkDto;
+
     
     
     

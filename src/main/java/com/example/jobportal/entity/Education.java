@@ -26,6 +26,8 @@ public class Education {
 	private LocalDate enddate;
 	private Boolean gradStatus;
 	private float percentageOrCGPA;
+	@ManyToOne
+	private Resume associatedResume;
 	
 	public int getEduId() {
 		return EduId;
@@ -115,7 +117,6 @@ public class Education {
 		this.associatedResume = associatedResume;
 	}
 
-	@ManyToOne
-	private Resume associatedResume;
+	
 
 }
