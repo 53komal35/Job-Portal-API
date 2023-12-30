@@ -1,5 +1,6 @@
 package com.example.jobportal.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -173,6 +174,52 @@ if(optEdu.isPresent()) {
 }
 
 else throw new EductationNotFoundException(" Education with given Id not present");
+
+	}
+	
+	
+	
+	
+	
+	
+
+	public ResponseEntity<ResponseStructure<List<EducationResponseDto>>> findEducationByResumeId(int resumeId) throws EductationNotFoundException, ResumeNotFoundException {
+	    
+        Optional<Resume> optResume = resumRepo.findById(resumeId);
+        
+	    if(optResume.isPresent()) {
+	    	
+	    	          Resume resume = optResume.get();
+	    	          
+	    	          List<Education> eduList = resume.getEduList();
+	    	                
+	    	          if(!eduList.isEmpty()) {
+	    	              List<EducationResponseDto> resList = new ArrayList<>();
+	    	                   for(Education edu : eduList) {
+	    	                	   
+	    	                	   
+	    	                   EducationResponseDto dto = convertToEducResponse(edu);
+	               HashMap<String,String> hashMap = new HashMap<>();
+	               
+	               hashMap.put("Applicant","/resumes/"+resumeId);
+	               dto.setOptions(hashMap);
+	               
+	               resList.add(dto);
+	               
+	    	                   }
+	    	ResponseStructure<List<EducationResponseDto>>respStruc = new ResponseStructure<>();
+	    	respStruc.setStatusCode(HttpStatus.FOUND.value());
+	    	respStruc.setMessage(" education data fetched  successfully");
+	    	respStruc.setData(resList);
+	  
+	    	return new ResponseEntity<ResponseStructure<List<EducationResponseDto>>>(respStruc, HttpStatus.FOUND);
+	    	
+	    	                   
+	    	          }
+	    	          else throw new EductationNotFoundException("education for this applicant not present");
+	    }
+
+	    else throw new ResumeNotFoundException(" REsume with given Id not present");
 
 	}
 
