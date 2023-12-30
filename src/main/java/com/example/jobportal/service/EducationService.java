@@ -75,7 +75,7 @@ public class EducationService {
 
 			Education education = convertToEducation(eduReq, new Education());
             
-			education.setAssociatedResume(resume);
+			//education.setAssociatedResume(resume);
 			
 		     List<Education> eduList = resume.getEduList();
              
@@ -220,6 +220,52 @@ else throw new EductationNotFoundException(" Education with given Id not present
 	    }
 
 	    else throw new ResumeNotFoundException(" REsume with given Id not present");
+
+	}
+
+	public ResponseEntity<ResponseStructure<String>> deleteEducationByResumeId(int resumeId,
+			int eduId) throws ResumeNotFoundException, EductationNotFoundException {
+		  Optional<Resume> optResume = resumRepo.findById(resumeId);
+	        
+		    if(optResume.isPresent()) {
+		    	
+		    	          Resume resume = optResume.get();
+		    	          
+		    	          List<Education> eduList = resume.getEduList();
+		    	                
+		    	          if(!eduList.isEmpty()) {
+		    	        	  
+		    	        	  boolean flag=false;
+		    	                   for(Education edu : eduList) {
+		    	                	   
+		                                      if(edu.getEduId()==eduId) {
+		                                    	  
+		                                    	  eduList.remove(edu);
+		                                    	  resume.setEduList(eduList); 
+		                                    	  eduRepo.deleteById(eduId); flag=true; 
+		                                      
+		                                      
+		                                    	break;}
+		                        
+		    	                   }
+		    	                   
+		    	                   
+		    	                   if(flag==false) throw new EductationNotFoundException("education with given Id not present");
+		    	                  
+		    	                
+		    	ResponseStructure<String>respStruc = new ResponseStructure<>();
+		    	respStruc.setStatusCode(HttpStatus.FOUND.value());
+		    	respStruc.setMessage(" education data deleted  successfully");
+		    	respStruc.setData("EDUCATION DATA DELETED AND RESUME UPDATED SUCCESSFULY");
+		  
+		    	return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.FOUND);
+		    	
+		    	                   
+		    	          }
+		    	          else throw new EductationNotFoundException("education for this applicant not present");
+		    }
+
+		    else throw new ResumeNotFoundException(" REsume with given Id not present");
 
 	}
 

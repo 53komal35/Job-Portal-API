@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,6 +65,13 @@ public class EducationController {
 		 return educationService.findEducationByResumeId(resumeId);
 	}
 	
+	@DeleteMapping("/resumes/{resumeId}/educations/{eduId}")  
+	public ResponseEntity<ResponseStructure<String>> deleteEducationByResumeId(@PathVariable int resumeId, 
+			@PathVariable int eduId		) throws EductationNotFoundException, ResumeNotFoundException   
+	{
+		
+		 return educationService.deleteEducationByResumeId(resumeId,eduId);
+	}
   
 	
 }
