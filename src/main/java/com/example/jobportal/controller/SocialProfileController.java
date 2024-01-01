@@ -1,5 +1,7 @@
 package com.example.jobportal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,7 +47,7 @@ public class SocialProfileController {
 		
 	}
 	
-	@PutMapping("/resumes/{resumeId}/socialId/{socialId}/socialProfiles")  
+	@PutMapping("/resumes/{resumeId}/socialProfiles/{socialId}")  
 	public ResponseEntity<ResponseStructure<String>> updatedSocialProfile(@RequestBody @Valid SocialProfileRequestDto 
 			socialReq,@PathVariable int resumeId,
 			@PathVariable int socialId) throws ResumeNotFoundException, SocialProfileNotFoundException 
@@ -56,11 +58,19 @@ public class SocialProfileController {
 	}
 	
 	
-	@GetMapping("/socialId/{socialId}/socialProfiles")  
+	@GetMapping("/socialProfiles/{socialId}")  
 	public ResponseEntity<ResponseStructure<SocialProfileResponseDto>> findSocialProfileById(@PathVariable int socialId) throws SocialProfileNotFoundException 
 	{
 		
 		 return socialService.findSocialProfileById(socialId);
+		
+	}
+	
+	@GetMapping("/resumes/{resumeId}/socialProfiles")  
+	public ResponseEntity<ResponseStructure<List<SocialProfileResponseDto>>> findSocialProfileByResumeId(@PathVariable int resumeId) throws SocialProfileNotFoundException, ResumeNotFoundException 
+	{
+		
+		 return socialService.findSocialProfileByResumeId(resumeId);
 		
 	}
 	
