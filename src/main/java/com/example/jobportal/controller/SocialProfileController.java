@@ -15,10 +15,12 @@ import com.example.jobportal.enums.SocialType;
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.IllegalAccssException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
+import com.example.jobportal.exceptionhandling.SocialProfileNotFoundException;
 import com.example.jobportal.exceptionhandling.UserNotFoundException;
 import com.example.jobportal.requestdto.CompanyRequestDto;
 import com.example.jobportal.requestdto.SocialProfileRequestDto;
 import com.example.jobportal.responsedto.CompanyResponseDto;
+import com.example.jobportal.responsedto.SocialProfileResponseDto;
 import com.example.jobportal.service.CompanyService;
 import com.example.jobportal.service.SocialProfileService;
 import com.example.jobportal.utility.ResponseStructure;
@@ -43,5 +45,23 @@ public class SocialProfileController {
 		
 	}
 	
+	@PutMapping("/resumes/{resumeId}/socialId/{socialId}/socialProfiles")  
+	public ResponseEntity<ResponseStructure<String>> updatedSocialProfile(@RequestBody @Valid SocialProfileRequestDto 
+			socialReq,@PathVariable int resumeId,
+			@PathVariable int socialId) throws ResumeNotFoundException, SocialProfileNotFoundException 
+	{
+		
+		 return socialService.updateSocialProfile(socialReq,resumeId,socialId);
+		
+	}
+	
+	
+	@GetMapping("/socialId/{socialId}/socialProfiles")  
+	public ResponseEntity<ResponseStructure<SocialProfileResponseDto>> findSocialProfileById(@PathVariable int socialId) throws SocialProfileNotFoundException 
+	{
+		
+		 return socialService.findSocialProfileById(socialId);
+		
+	}
 	
 }
