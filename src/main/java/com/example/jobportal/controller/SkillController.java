@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jobportal.exceptionhandling.JobNotFoundException;
 import com.example.jobportal.exceptionhandling.ResumeNotFoundException;
 import com.example.jobportal.exceptionhandling.SkillNotFoundException;
 import com.example.jobportal.requestdto.SkillRequestDto;
@@ -36,6 +37,14 @@ public class SkillController {
 		
 	}
 
+	@PostMapping("jobs/{jobId}/skills")  
+	public ResponseEntity<ResponseStructure<String>> insertSkillToJob(@PathVariable int jobId,@RequestBody SkillRequestDto reqSkill) 
+			throws JobNotFoundException  
+	{
+		
+		 return skillService.insertSkillinJob(reqSkill,jobId);
+		
+	}
 	
 	@PutMapping("resumes/{resumId}/skills")  
 	public ResponseEntity<ResponseStructure<String>> updateSkill(@PathVariable int resumId,@RequestBody SkillRequestDto reqSkill) 

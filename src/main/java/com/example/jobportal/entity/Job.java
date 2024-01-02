@@ -1,11 +1,14 @@
 package com.example.jobportal.entity;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -24,9 +27,20 @@ public class Job {
 	
 	@ManyToOne
 	private Company compMap;
+	
+	@ManyToMany
+	private List<Skill> skillList;
 
 	public int getJobId() {
 		return jobId;
+	}
+
+	public List<Skill> getSkillList() {
+		return skillList;
+	}
+
+	public void setSkillList(List<Skill> skillList) {
+		this.skillList = skillList;
 	}
 
 	public void setJobId(int jobId) {

@@ -173,10 +173,7 @@ public class SocialProfileService {
 	public ResponseEntity<ResponseStructure<List<SocialProfileResponseDto>>> findSocialProfileByResumeId(int resumeId) throws SocialProfileNotFoundException, ResumeNotFoundException 
 
 	{  
-		
-		
-		
-		
+	
 		Optional<Resume> optResume = resumeRepo.findById(resumeId);
 
 	if (optResume.isPresent()) {
