@@ -74,6 +74,15 @@ public class SkillController {
 		
 	}
 	
+	@DeleteMapping("jobs/{jobId}/skills/{skill}")  
+	public ResponseEntity<ResponseStructure<String>> deleteSkillInJob(@PathVariable int jobId,@PathVariable String skill) throws SkillNotFoundException, JobNotFoundException 
+			 
+	{     
+		 
+		 return skillService.deleteSkillInJob(jobId,skill);
+		
+	}
+	
 	@GetMapping("/skills/{skill}")  
 	public ResponseEntity<ResponseStructure<SkillResponseDto>> findSkillByName(@PathVariable String skill) throws SkillNotFoundException 
 			 

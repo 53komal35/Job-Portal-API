@@ -238,6 +238,36 @@ public class SkillService {
 
 }
 
+	
+	public ResponseEntity<ResponseStructure<String>> deleteSkillInJob(int jobId,String skill) throws SkillNotFoundException, JobNotFoundException 
+	 {
+		
+	                Optional<Job> optJob = jobRepo.findById(jobId);
+		  if(optJob.isPresent()) {
+			            Job job = optJob.get();
+		               
+                     Skill skilltoDel = skillRepo.findSkillByname(skill.toLowerCase());
+                     if (skilltoDel!=null) {
+                   	  
+                          
+                           List<Skill> updatedList = removeSkill(skilltoDel,job.getSkillList());
+
+                                            job.setSkillList(updatedList);
+                                            jobRepo.save(job);
+	    
+		ResponseStructure<String> respStruc = new ResponseStructure<>();
+		respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+		respStruc.setMessage(" Skill data removed  successfully");
+		respStruc.setData("  SKILL DELETED FROM JOBLIST SUCCESSFULLY");
+
+		return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.ACCEPTED);
+		
+}  else  throw new SkillNotFoundException("skill not present in resume");
+	
+
+		  } else throw new JobNotFoundException("job not present with this Id");
+
+}
 	public ResponseEntity<ResponseStructure<SkillResponseDto>> findSkillByName(String skillName) throws SkillNotFoundException {
 		    Skill skill = skillRepo.findSkillByname(skillName.toLowerCase());  // dont forget to convertt to lower case
 		    
