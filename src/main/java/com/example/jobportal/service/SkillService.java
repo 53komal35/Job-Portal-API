@@ -179,6 +179,35 @@ public class SkillService {
 
 }
 	
+	
+	public ResponseEntity<ResponseStructure<String>> updateSkillInJobList(SkillRequestDto skillReq,int jobId) throws JobNotFoundException 
+	 {
+
+ Optional<Job> optJob = jobRepo.findById(jobId);
+
+ if(optJob.isPresent()) {
+	   Job job = optJob.get();
+              
+	          List<Skill> updSkillList = convertToSkill(skillReq,job.getSkillList());
+	          
+	         
+             job.setSkillList(updSkillList);
+             jobRepo.save(job);
+             
+             
+		ResponseStructure<String> respStruc = new ResponseStructure<>();
+		respStruc.setStatusCode(HttpStatus.ACCEPTED.value());
+		respStruc.setMessage(" Skill data updated successfully");
+		respStruc.setData("  SKILL LIST  UPDATED IN JOB SUCCESSFULLY");
+
+		return new ResponseEntity<ResponseStructure<String>>(respStruc, HttpStatus.ACCEPTED);
+		
+}  else throw new JobNotFoundException("job with given id not present");
+
+
+}
+	
+	
 	public ResponseEntity<ResponseStructure<String>> deleteSkillInResume(int resumeid,String skill) throws SkillNotFoundException, ResumeNotFoundException 
 	 {
 		

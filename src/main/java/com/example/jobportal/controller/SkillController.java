@@ -54,6 +54,17 @@ public class SkillController {
 		 return skillService.updateSkill(reqSkill,resumId);
 		
 	}
+	
+	@PutMapping("jobs/{jobId}/skills")  
+	public ResponseEntity<ResponseStructure<String>> updateSkillInJob(@PathVariable int jobId,@RequestBody SkillRequestDto reqSkill) 
+			throws JobNotFoundException  
+	{
+		
+		 return skillService.updateSkillInJobList(reqSkill,jobId);
+		
+	}
+	
+	
 	@DeleteMapping("resumes/{resumId}/skills/{skill}")  
 	public ResponseEntity<ResponseStructure<String>> deleteSkillInResume(@PathVariable int resumId,@PathVariable String skill) throws SkillNotFoundException, ResumeNotFoundException 
 			 
