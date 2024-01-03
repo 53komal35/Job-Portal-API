@@ -12,11 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.example.jobportal.entity.Company;
 import com.example.jobportal.entity.Job;
+import com.example.jobportal.entity.Skill;
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.JobNotFoundException;
+import com.example.jobportal.exceptionhandling.SkillNotFoundException;
 import com.example.jobportal.repository.CompanyRepository;
 import com.example.jobportal.repository.JobRepository;
+import com.example.jobportal.repository.SkillRepository;
 import com.example.jobportal.requestdto.JobRequestDto;
+import com.example.jobportal.requestdto.SkillRequestDto;
 import com.example.jobportal.responsedto.JobResponseDto;
 import com.example.jobportal.utility.ResponseStructure;
 
@@ -30,6 +34,13 @@ public class JobService {
 
 	@Autowired
 	CompanyRepository compRepo;
+	@Autowired
+	SkillRepository skillRepo;
+	
+	
+	public JobService() {
+		// TODO Auto-generated constructor stub
+	}
 
 	private Job convertToJob(JobRequestDto jobRq, Job job) {
 
@@ -110,6 +121,41 @@ public class JobService {
 		}
 		
 		else throw new JobNotFoundException(" Jobs not present with this designation");
+
+	}
+	
+	public ResponseEntity<ResponseStructure<List<JobResponseDto>>> findJObBySkill(String skillin) throws JobNotFoundException, SkillNotFoundException 
+	{
+
+		    Skill skill = skillRepo.findSkillByname(skillin.toLowerCase());
+
+		if(skill!=null)
+		{
+			
+			List<Job> listJob = jobRepo.findAllBySkillList(skill);
+			
+			ArrayList<JobResponseDto> respList = new ArrayList<JobResponseDto>();
+             if(!listJob.isEmpty()) {
+			for (Job j: listJob) 
+			{
+				JobResponseDto dto = convertToJobResponse(j);
+				HashMap<String,String> hashMap = new HashMap<String,String>();
+				hashMap.put("Company","/companies/"+j.getCompMap().getCompanyId());
+				dto.setHashmap(hashMap);
+
+				respList.add(dto);	
+			}
+			ResponseStructure<List<JobResponseDto>> respStruc = new ResponseStructure<>();
+			respStruc.setStatusCode(HttpStatus.FOUND.value());
+			respStruc.setMessage(" Jobs fetched successfully");
+			respStruc.setData(respList);
+
+			return new ResponseEntity<ResponseStructure<List<JobResponseDto>>>(respStruc, HttpStatus.FOUND);
+             }
+             else throw new JobNotFoundException("jobs with this skill are not found");
+		}
+		
+		else throw new SkillNotFoundException(" skill not present with this name");
 
 	}
 	

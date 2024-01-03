@@ -318,5 +318,38 @@ public class SkillService {
 
 	}
 
+	public ResponseEntity<ResponseStructure<List<SkillResponseDto>>> findSkillByJobId(int jobId) throws SkillNotFoundException, JobNotFoundException {
+		  
+		 Optional<Job> optJob = jobRepo.findById(jobId);
+	if(optJob.isPresent())	
+	   {       Job job = optJob.get();
+		    List<Skill> listSkill = job.getSkillList();
+		    
+		    if(!listSkill.isEmpty()) {
+		    List<SkillResponseDto> respList = new ArrayList<>();
+		    
+		    for(Skill sk:listSkill) {
+		   HashMap<String,String> hashMap = new HashMap<>();
+		   
+	  SkillResponseDto dto = convertToSkillResponse(sk);
+	  
+	  hashMap.put("Requirement", "requirement");
+		  dto.setOptions(hashMap);
+		  respList.add(dto);
+		    }
+	ResponseStructure<List<SkillResponseDto>> respStruc = new ResponseStructure<>();
+	respStruc.setStatusCode(HttpStatus.FOUND.value());
+	respStruc.setMessage(" Skill data fetched  successfully");
+	respStruc.setData(respList);
 
+	return new ResponseEntity<ResponseStructure<List<SkillResponseDto>>>(respStruc, HttpStatus.FOUND);
+		    } else throw new SkillNotFoundException("Skills in JOb list nor present");
+	
+}  else  throw new JobNotFoundException("job not present in dataBase");
+
+	}
+
+
+	
+	
 }

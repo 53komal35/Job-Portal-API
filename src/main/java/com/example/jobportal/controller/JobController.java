@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.jobportal.exceptionhandling.CompanyNotFoundException;
 import com.example.jobportal.exceptionhandling.JobNotFoundException;
+import com.example.jobportal.exceptionhandling.SkillNotFoundException;
 import com.example.jobportal.requestdto.JobRequestDto;
 import com.example.jobportal.responsedto.JobResponseDto;
 import com.example.jobportal.service.JobService;
@@ -47,6 +48,16 @@ public class JobController {
 		 return jobService.findJOb(designation);
 		
 	}
+	
+	@GetMapping("/skills/{skill}/jobs")  
+	public ResponseEntity<ResponseStructure<List<JobResponseDto>>> findJobBySkillName(@PathVariable String skill) throws JobNotFoundException, SkillNotFoundException 
+			
+	{
+		
+		 return jobService.findJObBySkill(skill);
+		
+	}
+	
 	
 	@GetMapping("/locations/{loc}/jobs")  
 	public ResponseEntity<ResponseStructure<List<JobResponseDto>>> findJobByLocation(@PathVariable String loc) throws JobNotFoundException 
